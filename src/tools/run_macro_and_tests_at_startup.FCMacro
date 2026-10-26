@@ -1,0 +1,13 @@
+# Run the SelectionSet macro and then build test geometry and run tests.
+# Run manually after FreeCAD is open: Macro -> Macros -> run_macro_and_tests_at_startup.FCMacro -> Execute.
+# Results appear in Report view and in selection_set_test_results.txt in the selected output directory.
+
+import os
+import sys
+_dir = os.path.dirname(os.path.abspath(__file__))
+if _dir not in sys.path:
+    sys.path.insert(0, _dir)
+_path = os.path.join(_dir, "run_macro_and_tests_at_startup.py")
+_g = {"__file__": _path, "__name__": "__main__", "os": os, "sys": sys}
+_g.update(globals())
+exec(compile(open(_path).read(), _path, "exec"), _g)

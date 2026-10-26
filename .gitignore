@@ -1,0 +1,28 @@
+# Development-only files: do not ship with the addon (see release/RELEASE.md)
+rules.md
+TODO.md
+AGENTS.md
+*.AppImage
+*.log
+
+
+*.pyc*
+*.pyo
+*.pyd
+
+*.zip
+./Backups/*
+
+# Generated scratch files remain in tmp/; source tools are stored in src/tools/.
+/tmp/
+
+./FEM_CantileverBeam_with_SelectionSetLinks/*
+FEM_CantileverBeam_with_SelectionSetLinks*
+*.FCBak
+*.FCStd
+selection_set_test_results.txt
+results/clone-source/*
+
+# Local backup archives and agent-session instructions
+20261026 1242 Backup before new repo and push - FreeCAD_macro_SelectionSet.zip
+AGENTS.md

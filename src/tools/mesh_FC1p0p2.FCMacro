@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+"""Recorded FreeCAD 1.0.2 mesh-selection macro for local investigation only."""
+
+# Macro Begin: mesh_FC1p0p2.FCMacro +++++++++++++++++++++++++++++++++++++++++++++++++
+import FreeCAD
+
+# Gui.runCommand('Std_DlgMacroRecord',0)
+# Gui.Selection.clearSelection()
+# Gui.Selection.addSelection('Unnamed','FEM_Beam_Mesh')
+# App.getDocument('Unnamed').getObject('FEM_Beam_Mesh').ViewObject.doubleClicked()
+# Gui.Selection.setPreselection(App.getDocument('Unnamed').getObject('FEM_Beam_Mesh'),'',tp=2)
+# Macro End: mesh_FC1p0p2.FCMacro +++++++++++++++++++++++++++++++++++++++++++++++++
