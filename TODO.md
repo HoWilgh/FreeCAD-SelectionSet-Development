@@ -3,17 +3,131 @@
 > `TODO.md` tracks unfinished work.
 > `WORKFLOW_STATUS.md` documents the current verified workflow and status.
 
+## Showcase documentation to prepare
+
+- [ ] Fill the five image placeholders in
+  `SELECTIONSET_SHOWCASE_SUGGESTIONS.md` and select two to four of them for
+  the final publications (short and extended descriptions are drafted in the
+  same file).
+- [ ] Verify the screenshots against **Tests -> FEM beam example**:
+  plain beam, cut with hole, `FEM Cantilever`, `FEM beam variables`,
+  SelectionSets/links, and the result after **Update all sets and links**.
+- [ ] Record the exact FreeCAD version, macro version, hole switch state, and
+  cylinder radius used for each published image.
+- [ ] Publish the short version with the macro/release material and publish
+  the clear introduction plus the extended explanation in the referenced
+  FreeCAD forum discussion.
+
+## Compatibility update and official FreeCAD-macros submission
+
+### 1. Define the distribution route
+
+- [ ] Decide whether the target is an entry in `FreeCAD/FreeCAD-macros`, a
+  standalone repository installed through a custom Addon Manager source, or
+  both. Do not mix the two package formats.
+- [ ] For the official macro repository, omit `package.xml`; use the
+  category directory and the macro's `__Files__` metadata.
+- [ ] Exclude `TODO.md`, `AGENTS.md`, plans, AppImages, generated results,
+  backups, credentials, and local test infrastructure from the submitted
+  directory.
+- [ ] Decide whether `selection_set_tests.py` remains an intentional part of
+  the installed macro because it supplies the Tests button; update
+  `__Files__` and documentation together with that decision.
+- [ ] Choose the exact supported FreeCAD versions and document known
+  FEM/GMSH limitations.
+
+### 2. Synchronize and audit the current upstream
+
+- [ ] Update the local `FreeCAD-macros` sibling clone from
+  `FreeCAD/FreeCAD-macros`; record the upstream commit used for the audit.
+- [ ] Prepare a clean branch from the current upstream default branch and
+  copy only the intended release files.
+- [ ] Audit imports, runtime paths, icons, and `__Files__` in a clean FreeCAD
+  macro directory. Every installed dependency must be present and listed.
+- [ ] Complete the official metadata near the top of `SelectionSet.FCMacro`:
+  `__Name__`, `__Comment__`, `__Author__`, `__Date__`, `__Version__`,
+  `__License__`, `__Web__`, `__Wiki__`, `__Help__`, `__Status__`,
+  `__Requires__`, `__Communication__`, and `__Files__`. Use literal
+  single-line strings.
+- [ ] Resolve the current metadata gap: confirm the final license,
+  author/contact, version/date, wiki URL, communication URL, status, and
+  complete auxiliary file list before submission.
+- [ ] Confirm the filename and category placement follow the official
+  CamelCase and category conventions.
+
+### 3. Produce compatibility evidence
+
+- [ ] Run the automated matrix on the development source and clean release
+  candidate with the supported FreeCAD builds.
+- [ ] Run from a clean user macro directory. Verify toolbar creation, normal
+  SelectionSet use, SelectionSetLink renewal, save/reopen, and the FEM beam
+  example.
+- [ ] Test the FEM example with and without the hole and with
+  `CylinderRadius` 300 and 400. Confirm recompute followed by **Update all
+  sets and links** refreshes the intended FEM references.
+- [ ] Record every run as defined in the compatibility-evidence section
+  below (timestamp, executable name and SHA-256, FreeCAD/library build, OS,
+  repository commit, macro version, solver/GMSH versions, command line,
+  result files, warnings, failures, and exit status).
+- [ ] Classify each failure as a macro defect, upstream API change,
+  solver/toolchain issue, or unresolved compatibility issue.
+- [ ] Make debug output opt-in for the release candidate and verify normal
+  use does not create development logs in the user's macro directory.
+- [ ] Update the standalone macro README and release metadata only after
+  clean-install results are reproducible.
+
+### 4. Obtain community review
+
+- [ ] Post the concise description, screenshots, installation steps,
+  supported versions, limitations, and reproducible example in the FreeCAD
+  Python Scripting and Macros forum.
+- [ ] Ask reviewers to check the workflow, metadata, licensing, file list,
+  and compatibility claims; record and address feedback.
+- [ ] Wait for a clear positive review/green light before preparing the
+  upstream pull request, following the official `FreeCAD-macros` procedure.
+
+### 5. Prepare and validate the pull request
+
+- [ ] Create a fresh feature branch from the latest upstream default branch.
+- [ ] Add only the reviewed SelectionSet directory and required files. Do not
+  add `package.xml` to the official macro-repository route.
+- [ ] Run the repository's documented local checks, including pre-commit
+  checks if enabled, and rerun clean-install and compatibility tests.
+- [ ] Inspect the final diff for generated artifacts, local paths, private
+  data, secrets, and unrelated changes.
+- [ ] Push to the personal fork only when explicitly authorized, then open a
+  PR against `FreeCAD/FreeCAD-macros` with summary, test matrix, screenshots,
+  forum review link, limitations, and file list.
+- [ ] Monitor CI and reviewer feedback; rerun affected tests and keep the PR
+  description synchronized with the actual release.
+- [ ] After merge, verify Addon Manager listing and installation/update from a
+  clean FreeCAD profile.
+
+### 6. Alternative standalone-repository route
+
+- [ ] If the official route is declined or the file set is too large,
+  complete `release/package.xml`, add the correct license, repository URL,
+  maintainer, date, and version, and test a clean custom Addon Manager source.
+- [ ] Keep `package.xml` in the standalone package only, never in the
+  official `FreeCAD-macros` directory.
+
 ## Suggested next steps
 
-1. **Before release:** Make all debugging off by default (no debug output unless enabled).
-2. **Release prep:** Fill in `release/package.xml` (maintainer, repo URL), add LICENSE, follow **release/RELEASE.md**. Test on FreeCAD 1.0.2 and 1.1. Document installation in README.
-3. **Git – exclude dev-only files from addon repo:** Ensure `rules.md` and `TODO.md` are not shipped with the addon. They are in `.gitignore`. If they were already committed, run:
+1. **Before release:** Make all debugging off by default (no debug output
+   unless enabled); part of the release checklist step 3 above.
+2. **Git – exclude dev-only files from addon repo:** Ensure `rules.md` and
+   `TODO.md` are not shipped with the addon. They are in `.gitignore`. If they
+   were already committed, run:
    ```bash
    git rm --cached rules.md TODO.md
    git commit -m "Stop tracking rules.md and TODO.md; do not ship with addon"
    ```
-   Then the release repo (e.g. GitHub source for Addon Manager) will not contain them.
-4. **Optional:** List macro on wiki (Macros recipes) or submit a minimal version to FreeCAD-macros.
+   Then the release repo (e.g. GitHub source for Addon Manager) will not
+   contain them.
+3. All release-preparation, compatibility-evidence, community-review, and
+   pull-request work is tracked in the release checklist above and in
+   **release/RELEASE.md**; the wiki-listing option is decided in checklist
+   step 1.
 
 ## Release decisions recorded
 
@@ -36,9 +150,21 @@
 
 ## To do
 
-- [ ] after finished everything for releasing the macro: Make all debugging off by default (no debug output unless enabled).
-- [ ] Prepare for release as macro for FreeCAD (Addon Manager) on v1.0.2 and v1.1: fill in `release/package.xml` (maintainer, repo URL), add LICENSE, then follow **release/RELEASE.md** (official doc links + own-GitHub + custom addon source). Optional: list on wiki or submit minimal version to FreeCAD-macros.
-- [ ] Before publishing addon repo: if `rules.md` or `TODO.md` were ever committed, run `git rm --cached rules.md TODO.md` and commit so they are not in the addon package (see Suggested next steps and release/RELEASE.md).
+Release preparation, packaging, Addon Manager publishing, and the official
+FreeCAD-macros submission are tracked in the release checklist and
+**Suggested next steps** above; they are not repeated here.
+
+- [ ] Consider bumping the macro version (`__version__` in `selection_set_core.py`) for the new edges mode and link TargetProperty feature before the next release.
+- [ ] Optional: Extend the box/cut FEM beam example (`run_fem_cantilever_beam_example`) with a direction-edge SelectionSet/link like the PartDesign example, so its force Direction also survives the cut switch.
+- [ ] Optional: Add an automated test case for edges mode (get_edges_by_point / coordinates) and for link TargetProperty='Direction'.
+- [ ] Optional: Verify the FEM PartDesign beam example on FreeCAD 1.0.2 (PartDesign::Fillet property names, stale-reference behaviour without TNP: Face2 may silently resolve to the wrong face instead of '?Face2').
+- [ ] Optional: Add an automated test case for the FEM PartDesign beam example (build, enable fillet, Update all sets and links, check constraint refs; expected deflection without fillet ~88.4 mm).
+- [x] **FEM beam example (PartDesign body)** – Tests pulldown entry `run_fem_partdesign_beam_example`: PartDesign Body (sketch 8000x1000 + pad 1000), mesh geometry = Body, PartDesign::Fillet on the long top edge (suppressed by default, radius via `PD beam variables`.FilletRadius), direct + SelectionSetLink-driven constraint references. Verified on FreeCAD 1.1.4 and 26.3rc2 (results in `results/pd-beam-verify/`): fillet changes face numbering (force face Face2 -> Face5, Face2 -> fixed end), stale direct ref is invalidated ('?Face2') on 1.1, `Update all sets and links` restores the intended references.
+- [x] Verify the standalone copy `src/tools/fem_beam_example_partdesign.py` with a GUI run (approved runs later completed; the PartDesign example with direction links verified 25/25 on FreeCAD 1.1.4 and 26.3rc2 in `results/pd-direction-verify/`; the copy is kept verbatim in sync with the tests-module example).
+- [x] **Tree layout coherence** (user-reported: Tests menu put the Body inside 'FEM Cantilever (PartDesign)' while the standalone scripts leave it next to the analysis): removed `PD_Beam` from the group in `run_fem_partdesign_beam_example` and its standalone copy, so in all paths the Body sits at document top level next to the FEM analysis and the group holds only SelectionSets, links, variables, and readme. Verified on FreeCAD 1.1.4 (27/27 checks, `results/pd-group-verify/`). Also added the readme TextDocument 'FEM PD beam – readme and expected values' (FEM_PDBeam_Readme) to `ccx_cantilever_faceload_partdesign_selectionset.py` and its 'SelectionSets and links' group (7/7 checks, `results/macro-menu-verify/`).
+- [x] **Macro-menu execution of the standalone PartDesign files** (user-reported: running from the FreeCAD Macro menu did nothing): the files only defined `setup()`/the example function without calling it. Added `if __name__ == "__main__": setup()` guards (FreeCAD's macro dialog runs the file in a copy of the `__main__` namespace) plus a `__file__`-less fallback that locates `src/macro` via the working directory. Verified on FreeCAD 1.1.4 (6/6 checks, `results/macro-menu-verify/`): all three files build their example via macro-menu semantics (with and without `__file__`), and a plain `import` does not trigger anything.
+- [x] **Direction-edge allocation via SelectionSet/link** (user-confirmed need): SelectionSet Mode extended with **edges** (coordinates mode via new `get_edges_by_point`, volume modes via common-length containment/intersection), `createSelectionSetFromCurrent` accepts `force_mode='edges'`, and SelectionSetLink gained **TargetProperty** ('References' default, or 'Direction' to apply the first edge ref to e.g. `ConstraintForce.Direction`). The PartDesign examples (tests example + standalone copy + `ccx_cantilever_faceload_partdesign_selectionset.py`) now create `PD_Beam_ForceDirection`/`FEM_PDBeam_Link_ForceDirection` resp. `Cantilever_ForceDirectionEdge`/`Link_ForceDirection`. Verified on FreeCAD 1.1.4 and 26.3rc2 (25/25 checks each, results in `results/pd-direction-verify/`): after the fillet the stale Direction retargets (e.g. to 'Edge14') or breaks; renew restores a vertical direction edge at x=8000.
+- [x] **Standalone PartDesign cantilever pair** (`src/tools/`): `ccx_cantilever_faceload_partdesign.py` (as near as possible to the original `ccx_cantilever_faceload.py`: same setup()/get_information()/get_explanation() structure, same solver/material/mesh settings, same literal direct refs `Face2`/`Edge5`, but PartDesign Body geometry and a suppressed fillet on the long top edge) and `ccx_cantilever_faceload_partdesign_selectionset.py` (copy extended with SelectionSets + SelectionSetLinks for mesh/material/constraints and `renew_selection_references(doc)`). Verified on FreeCAD 1.1.4 and 26.3rc2 (results in `results/pd-cantilever-files-verify/`, 21/21 checks each): direct refs break after the fillet (`?Face2`/`?Face4`), renew restores force -> Face5 (x=8000) and fixed -> Face2 (x=0), mesh geometry stays on the Body and GMSH regenerates.
 - [x] Define the release-file set and use the GitHub clone's
   `FEM/SelectionSet` directory as a release-candidate source under test.
   Keep the sibling clone separate from the development workspace, and keep
@@ -152,7 +278,8 @@ testing without losing the existing evidence.
   `FreeCAD_26.3rc2`.
 - [ ] Record for every run: timestamp, executable name and SHA-256, reported
   FreeCAD/library build, OS, repository commit, macro version, solver/GMSH
-  versions, command line, result file, warnings, failures, and exit status.
+  versions, command line, result file, warnings, failures, and exit status
+  (see also step 3 of the release checklist above).
 - [x] Run the existing tests unchanged before changing expected values or
   interpreting a version-specific difference.
 

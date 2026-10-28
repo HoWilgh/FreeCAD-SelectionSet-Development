@@ -258,12 +258,74 @@ These values were accepted within the tolerances used by the test runner.
 They are evidence for the recorded runs, not a guarantee for all meshes,
 platforms, solver versions, or future FreeCAD releases.
 
+### PartDesign-body examples (fillet topology change)
+
+Two PartDesign variants of the cantilever example exist and are verified:
+
+- The macro-internal example `run_fem_partdesign_beam_example`
+  (`src/macro/selection_set_tests.py`, Tests pulldown entry
+  **FEM beam example (PartDesign body)**): PartDesign Body (sketch 8000x1000
+  + pad 1000), mesh geometry = Body, fillet feature on the long top edge
+  (suppressed by default, radius via `PD beam variables`.FilletRadius), direct
+  and link-driven constraint references.
+- The standalone pair in `src/tools/`:
+  `ccx_cantilever_faceload_partdesign.py` (direct references only) and
+  `ccx_cantilever_faceload_partdesign_selectionset.py` (SelectionSets,
+  SelectionSetLinks, and `renew_selection_references(doc)`), kept structurally
+  close to the upstream `ccx_cantilever_faceload.py`.
+
+Verified behaviour (FreeCAD 1.1.4 and 26.3rc2; 21/21 checks each; evidence in
+`results/pd-beam-verify/` and `results/pd-cantilever-files-verify/`):
+
+- Introducing the fillet changes the Body face numbering: force face
+  `Face2` -> `Face5`, and `Face2` then names the fixed end.
+- Direct references break: FreeCAD 1.1 invalidates them (`?Face2`, `?Face4`);
+  on 1.0 they may silently resolve to a different face.
+- `Update all sets and links` / `renew_selection_references(doc)` restores the
+  intended references (force -> x=8000, fixed -> x=0); the mesh geometry stays
+  on the Body and GMSH regenerates the fillet shape (27371 nodes recorded).
+- GMSH meshing of the plain pad shape also worked in the standalone file
+  (9190 nodes recorded).
+
+Direction-edge extension (user-confirmed need: the force Direction edge is a
+separate reference that also breaks):
+
+- SelectionSet Mode gained `edges` (coordinates mode via new
+  `get_edges_by_point`; volume modes via common-length containment /
+  intersection), and SelectionSetLink gained `TargetProperty`
+  (`References` default, `Direction` applies the first edge ref to e.g.
+  `ConstraintForce.Direction`).
+- The PartDesign examples create an edges SelectionSet plus a Direction link
+  (`PD_Beam_ForceDirection` / `FEM_PDBeam_Link_ForceDirection`, and
+  `Cantilever_ForceDirectionEdge` / `Link_ForceDirection` in the standalone
+  file).
+- Verified on FreeCAD 1.1.4 and 26.3rc2 (25/25 checks each for the macro
+  example and the standalone pair; evidence in `results/pd-direction-verify/`):
+  after the fillet the stale Direction retargets (e.g. to `Edge14`) or breaks;
+  renewal restores a vertical direction edge at x=8000. The direction edge
+  itself was kept on the y=width side (opposite the fillet at y=0), so the
+  check asserts the renewal path rather than the exact stale value.
+
 ## Recorded FreeCAD runs and logs
 
 The available logs show runs with:
 
 - FreeCAD 1.0.2, Libs 1.0.2R39319 (Git);
 - FreeCAD 1.1.0, Libs 1.1.0rc3R20260223 (Git shallow).
+
+Additional verified GUI runs recorded for the PartDesign examples:
+
+- FreeCAD 1.1.4, Libs 1.1.4R20260928 (Git shallow): example and standalone-pair
+  verification, 21/21 checks each (`results/pd-beam-verify/FreeCAD_1.1.4_rerun/`,
+  `results/pd-cantilever-files-verify/FreeCAD_1.1.4/`);
+- FreeCAD 26.3 RC2: same verifications, 21/21 checks each
+  (`results/pd-beam-verify/FreeCAD_26.3rc2/`,
+  `results/pd-cantilever-files-verify/FreeCAD_26.3rc2/`).
+
+These targeted runs verify build, meshing, direct-reference breakage, and
+renewal, but they are not part of the automated test suite: the PartDesign
+example has no automated test case yet, and the runs were not bound to
+recorded executable hashes or a full metadata set.
 
 The 1.0.2 log confirms macro loading, test-geometry creation, successful
 creation of the FEM cut through BOPTools, and SelectionSetLink application.
