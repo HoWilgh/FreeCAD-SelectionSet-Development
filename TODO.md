@@ -154,7 +154,7 @@ Release preparation, packaging, Addon Manager publishing, and the official
 FreeCAD-macros submission are tracked in the release checklist and
 **Suggested next steps** above; they are not repeated here.
 
-- [ ] Consider bumping the macro version (`__version__` in `selection_set_core.py`) for the new edges mode and link TargetProperty feature before the next release.
+- [x] Bump macro version to **1.1.0** for the edges-mode and link-TargetProperty feature set and the PartDesign beam example: `__version__` (`selection_set_core.py`), `__Version__` (`SelectionSet.FCMacro`), `REQUIRED_MACRO_VERSION` (`selection_set_tests.py`), and `release/package.xml` (version + date). Use commit subject `SelectionSet 1.1.0: edges mode, Direction links, and PartDesign FEM beam example` when syncing to the clone.
 - [ ] Optional: Extend the box/cut FEM beam example (`run_fem_cantilever_beam_example`) with a direction-edge SelectionSet/link like the PartDesign example, so its force Direction also survives the cut switch.
 - [ ] Optional: Add an automated test case for edges mode (get_edges_by_point / coordinates) and for link TargetProperty='Direction'.
 - [ ] Optional: Verify the FEM PartDesign beam example on FreeCAD 1.0.2 (PartDesign::Fillet property names, stale-reference behaviour without TNP: Face2 may silently resolve to the wrong face instead of '?Face2').

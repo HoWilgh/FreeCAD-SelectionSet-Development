@@ -32,3 +32,4 @@ src/macro/**/*.sta
 src/macro/**/*.12d
 src/macro/**/*.dat
 src/macro/**/*.inp
+src/macro/**/*.out

@@ -35,8 +35,9 @@ from selection_set_core import (
     USE_SELECTION_OBSERVER,
 )
 
-# Minimum macro version expected for the full test suite (FEM cantilever, multi-target links, etc.).
-REQUIRED_MACRO_VERSION = "1.0.1"
+# Minimum macro version expected for the full test suite (FEM cantilever, PartDesign beam
+# example with edges mode and Direction links, multi-target links, etc.).
+REQUIRED_MACRO_VERSION = "1.1.0"
 
 # Set to True to write fem_cantilever_debug.log and gmsh_mesh_debug.log and to emit [FEM-cut] / [GMSH-mesh] lines to report/console during FEM cantilever test. False = no debug files, quiet run.
 WRITE_FEM_DEBUG_FILES = False

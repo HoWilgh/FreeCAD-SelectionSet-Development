@@ -4,9 +4,9 @@
      and ensure LICENSE exists. -->
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>SelectionSet</name>
-  <description>Volume-based selection of faces or solids. SelectionSet and SelectionSetLink for FEM and other references.</description>
-  <version>1.0.1</version>
-  <date>2025-03-01</date>
+  <description>Volume-based selection of faces, solids, or edges. SelectionSet and SelectionSetLink for FEM and other references.</description>
+  <version>1.1.0</version>
+  <date>2026-10-28</date>
   <maintainer email="YOUR_EMAIL">YOUR_NAME</maintainer>
   <license file="LICENSE">LGPL-2.1-or-later</license>
   <url type="repository" branch="main">https://github.com/YOUR_USERNAME/FreeCAD_macro_SelectionSet</url>

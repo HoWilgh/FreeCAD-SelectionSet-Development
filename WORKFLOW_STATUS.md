@@ -29,6 +29,15 @@ FreeCAD files.
 - The sibling clone is based on upstream `master`. An upstream update of the
   remote `FreeCAD-macros` `master` is probably needed before treating the
   SelectionSet release candidate as current.
+- The development source is at macro version **1.1.0**
+  (`__version__` in `selection_set_core.py`, `__Version__` in
+  `SelectionSet.FCMacro`, `REQUIRED_MACRO_VERSION` in
+  `selection_set_tests.py`, and `release/package.xml`). The bump covers the
+  1.1.0 feature set: SelectionSet edges mode and SelectionSetLink
+  `TargetProperty` (References | Direction) plus the PartDesign FEM beam
+  example. The sibling clone still contains the committed 1.0.1
+  release-candidate state until the files are synchronized and committed
+  there.
 
 ### Package metadata preparation
 
