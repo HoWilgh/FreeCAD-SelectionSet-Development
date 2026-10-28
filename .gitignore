@@ -24,5 +24,11 @@ selection_set_test_results.txt
 results/clone-source/*
 
 # Local backup archives and agent-session instructions
-20261026 1242 Backup before new repo and push - FreeCAD_macro_SelectionSet.zip
 AGENTS.md
+results/**/*.txt
+src/macro/**/*.cvg
+src/macro/**/*.frd
+src/macro/**/*.sta
+src/macro/**/*.12d
+src/macro/**/*.dat
+src/macro/**/*.inp
